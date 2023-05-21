@@ -1,4 +1,4 @@
- import 'package:biblia_links/domain/value_object/text_vo.dart';
+ import 'package:biblia_links/bible/domain/value_object/text_vo.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

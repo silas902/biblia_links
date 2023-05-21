@@ -1,8 +1,8 @@
-import 'package:biblia_links/domain/entities/bible/chapter.dart';
-import 'package:biblia_links/domain/entities/bible/verse.dart';
-import 'package:biblia_links/domain/value_object/number_text_vo.dart';
-import 'package:biblia_links/domain/value_object/quantity_of_letters_vo.dart';
-import 'package:biblia_links/domain/value_object/text_vo.dart';
+import 'package:biblia_links/bible/domain/entities/bible/chapter.dart';
+import 'package:biblia_links/bible/domain/entities/bible/verse.dart';
+import 'package:biblia_links/bible/domain/value_object/number_text_vo.dart';
+import 'package:biblia_links/bible/domain/value_object/quantity_of_letters_vo.dart';
+import 'package:biblia_links/bible/domain/value_object/text_vo.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
