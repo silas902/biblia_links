@@ -5,7 +5,6 @@ import 'package:biblia_links/bible/domain/usercases/get_bible_local/get_bible_lo
 import 'package:biblia_links/bible/utils/list_of_bible_books_constante.dart';
 import 'package:biblia_links/errors/failure.dart';
 
-
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -30,7 +29,25 @@ class BibleDataSourceMock implements BibleDataSource {
   }
 }
 
-class ErrorMock implements BibleDataSource {
+class DataSourceFormatExceptionErroMock implements BibleDataSource {
+  List<Map<String, dynamic>> books = [];
+  List booksOfBible = ListOfBibleBooksConstante.bookNames;
+
+  @override
+  Future<List<Map<String, dynamic>>> getBibles() async {
+    books.clear();
+    for (var i = 0; i < booksOfBible.length; i++) {
+      String bookJson = await rootBundle.loadString('assets/biblia_af/${booksOfBible[i]}');
+      final dynamic jsonResponse = jsonDecode(bookJson);
+
+      books.add(jsonResponse);
+    }
+
+    return books;
+  }
+}
+
+class DataSourceFormatExceptionErrorMock implements BibleDataSource {
   String locale = """{
     "2 João": [
         {
@@ -83,20 +100,13 @@ class ErrorMock implements BibleDataSource {
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
- 
-  
-  
-  
-  group('dados corretos \n', ()  {
-    
-
+  group('dados corretos \n', () {
     GetBiblesLocalUseCaseImp getBibleLocalUserCaseImp = GetBiblesLocalUseCaseImp(bibleDataSource: BibleDataSourceMock());
-    
-    
-    // 
+
+    //
     List<List<dynamic>> infoBooks = ListOfInformationOfEachBookOfTheBible.bibleInfo;
-    test('Espero retornar uma list<Bible>', () async  {
-      expect( await getBibleLocalUserCaseImp.call(), isA<List<Bible>>());
+    test('Espero retornar uma list<Bible>', () async {
+      expect(await getBibleLocalUserCaseImp.call(), isA<List<Bible>>());
     });
 
     test('Espero retornar o nome de cada livro da biblia', () async {
@@ -135,12 +145,14 @@ void main() {
   });
 
   group('dados incorretos', () {
+    test('Espero retornar um FlutterError', () {
+      GetBiblesLocalUseCaseImp userCaseErroruserCaseError = GetBiblesLocalUseCaseImp(bibleDataSource: DataSourceFormatExceptionErroMock());
+      expect(userCaseErroruserCaseError.call(), throwsFlutterError);
+    });
 
-    GetBiblesLocalUseCaseImp userCaseError = GetBiblesLocalUseCaseImp(bibleDataSource: ErrorMock());
-    
-    test('Espero retornar um error', () {
+    test('Espero retornar um FormatException', () {
+      GetBiblesLocalUseCaseImp userCaseError = GetBiblesLocalUseCaseImp(bibleDataSource: DataSourceFormatExceptionErrorMock());
       expect(userCaseError.call(), throwsFormatException);
-
     });
   });
 }

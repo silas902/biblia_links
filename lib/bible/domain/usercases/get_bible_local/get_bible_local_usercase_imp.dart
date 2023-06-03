@@ -1,4 +1,3 @@
-
 import 'package:biblia_links/errors/failure.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
@@ -40,10 +39,10 @@ class GetBiblesLocalUseCaseImp implements GetBibleLocalUseCase {
       return bibles;
     } on FlutterError catch (e) {
       throw FlutterError(e.stackTrace.toString());
-    } on FormatException { 
-       throw const FormatException();
-    }catch (e) {
-      throw UnknownError( label: e.toString(), stackTrace: StackTrace.current);
+    } on FormatException catch (e) {
+      throw FormatException(e.toString());
+    } catch (e) {
+      throw UnknownError(label: e.toString(), stackTrace: StackTrace.current);
     }
   }
 

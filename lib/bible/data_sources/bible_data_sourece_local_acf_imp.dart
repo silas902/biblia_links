@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:biblia_links/bible/errors/data_sources_erros/data_source_oflline_failure.dart';
 import 'package:biblia_links/bible/utils/list_of_bible_books_constante.dart';
+import 'package:biblia_links/errors/failure.dart';
 import 'package:flutter/services.dart';
 
 import 'bibles_data_source.dart';
@@ -23,8 +24,9 @@ class BibleDataSourceLocalACFImp implements BibleDataSource {
 
       return booksJson;
     } on FormatException catch (e) {
-       throw JsonError(completeError: e.toString());
+      throw JsonError(completeError: e.toString());
+    } catch (e) {
+      throw UnknownError(label: e.toString(), stackTrace: StackTrace.current);
     }
-
   }
 }
